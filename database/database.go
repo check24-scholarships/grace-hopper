@@ -32,7 +32,8 @@ func InsertProduct(db *sql.DB, product Product) error {
 }
 
 func Search(db *sql.DB, name string) []Product {
-	rows, err := db.Query("SELECT name, price, image FROM products WHERE name LIKE '%' || ? || '%'", name)
+	query := "%" + name + "%";
+	rows, err := db.Query("SELECT name, price, image FROM products WHERE name LIKE ?", query)
 	if err != nil {
 		log.Fatal(err)
 	}
