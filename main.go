@@ -23,6 +23,15 @@ func main() {
 			"time": datetime,
 		})
 	})
+	router.GET("/search", func(c *gin.Context) {
+		searchQuery, ok := c.GetQuery("q")
+        products = database.Search(db, searchQuery)
+		
+		c.HTML(http.StatusOK, "search.html", gin.H{
+			"products" : products
+		})
+	})
+
 	router.Run(":8000")
 
 }
