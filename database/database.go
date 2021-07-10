@@ -16,9 +16,7 @@ type Product struct {
 func OpenDatabase() (*sql.DB, error) {
 	db, err := sql.Open("mysql",
 		"root:grace_hopper@tcp(127.0.0.1:3306)/grace_hopper")
-	if err != nil {
-		log.Fatal(err)
-	}
+
 	return db, err
 }
 
