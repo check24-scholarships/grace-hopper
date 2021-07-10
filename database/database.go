@@ -26,7 +26,8 @@ func CloseDatabase(db *sql.DB) {
 
 func InsertProduct(db *sql.DB, product Product) error {
 	query := "INSERT INTO products (`name`, `price`, `image`) VALUES (?, ?, ?)"
-	_, err := db.Query(query, product.Name, product.Price, product.Image)
+	insert, err := db.Query(query, product.Name, product.Price, product.Image)
+	defer insert.Close()
 	return err
 }
 
