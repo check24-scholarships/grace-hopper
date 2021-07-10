@@ -5,14 +5,15 @@ import (
 	"time"
 
 	"grace-hopper/database"
+
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	router := gin.Default()
 	router.LoadHTMLGlob("templates/*")
-	db, err := database.OpenDatabase()
-	
+	db, _ := database.OpenDatabase()
+
 	defer database.CloseDatabase(db)
 	// handle Error
 
@@ -24,11 +25,11 @@ func main() {
 		})
 	})
 	router.GET("/search", func(c *gin.Context) {
-		searchQuery, ok := c.GetQuery("q")
-        products = database.Search(db, searchQuery)
-		
+		searchQuery, _ := c.GetQuery("q")
+		products := database.Search(db, searchQuery)
+
 		c.HTML(http.StatusOK, "search.html", gin.H{
-			"products" : products
+			"products": products,
 		})
 	})
 
