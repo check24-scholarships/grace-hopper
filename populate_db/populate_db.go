@@ -40,6 +40,7 @@ func main() {
 
 	log.Println("Establishing DB connection")
 	db, err := database.OpenDatabase()
+
 	if err != nil {
 		log.Fatal(err)
 		return
@@ -51,7 +52,7 @@ func main() {
 	log.Println()
 
 	for idx, product := range table {
-		log.Printf("[%d/%d]", idx, len(table))
+		log.Printf("[%d/%d]", idx+1, len(table))
 		err = database.InsertProduct(db, database.Product(product))
 
 		if err != nil {
@@ -59,4 +60,6 @@ func main() {
 			log.Println(err)
 		}
 	}
+
+	log.Println("Inserted the products")
 }
