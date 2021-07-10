@@ -25,15 +25,22 @@ func CloseDatabase(db *sql.DB){
 	db.Close()
 }
 
-func Search(db *sql.DB, name string) (Product){
-	results, err := db.Query("SELECT * FROM products WHERE name LIKE '%?%'", name)
+func Search(db *sql.DB, name string) ([]Product){
+	rows, err := db.Query("SELECT * FROM products WHERE name LIKE '%?%'", name)
     if err != nil {
 		log.Fatal(err)
 	}
 	defer rows.Close()
+
+	var products []Product
+	var currentProduct Product
+
 	for rows.Next() {
-		err := rows.Scan(&name, &price, &image)
+		err := rows.Scan(&currentProduct.Name, &currentProduct.Price, &currentProduct.Image)
 		if err != nil {
 			log.Fatal(err)
 		}
+		products = append(products, currentProduct)
+	}
+	return products
 }
