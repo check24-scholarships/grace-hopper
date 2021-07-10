@@ -29,6 +29,7 @@ func ReadTableFromJson(fileName string) ([]Product, error) {
 func main() {
 	jsonPath := "populate_db/dump.json"
 
+	log.Println("Reading product data from JSON")
 	var table []Product
 	table, err := ReadTableFromJson(jsonPath)
 
@@ -37,6 +38,7 @@ func main() {
 		return
 	}
 
+	log.Println("Establishing DB connection")
 	db, err := database.OpenDatabase()
 	if err != nil {
 		log.Fatal(err)
@@ -45,7 +47,11 @@ func main() {
 
 	defer database.CloseDatabase(db)
 
-	for _, product := range table {
+	log.Printf("Inserting %d products\n", len(table))
+	log.Println()
+
+	for idx, product := range table {
+		log.Printf("[%d/%d]", idx, len(table))
 		err = database.InsertProduct(db, database.Product(product))
 
 		if err != nil {
