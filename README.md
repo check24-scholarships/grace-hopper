@@ -2,4 +2,4 @@
 # Grace Hopper - Golang
 
 
-Emil - Mel - Finlay
+Emil - Mel - Finlay - Hanne
