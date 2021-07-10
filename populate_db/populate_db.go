@@ -2,42 +2,55 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	"grace-hopper/database"
 	"io/ioutil"
 	"log"
-	"os"
 )
 
-type Product struct {
-	Name  string `json:"name"`
-	Price int    `json:"price"`
-	Image string `json:"image"`
-}
+type Product = database.Product
 
-func main() {
-	jsonPath := "populate_db/dump.json"
-	rawData, err := ioutil.ReadFile(jsonPath)
-
-	path, _ := os.Getwd()
-	fmt.Println(path)
+func ReadTableFromJson(fileName string) ([]Product, error) {
+	rawData, err := ioutil.ReadFile(fileName)
 
 	if err != nil {
-		log.Fatal(err)
-		return
+		return nil, err
 	}
 
 	var table []Product
 	err = json.Unmarshal([]byte(rawData), &table)
 
 	if err != nil {
+		return nil, err
+	}
+
+	return table, nil
+}
+
+func main() {
+	jsonPath := "populate_db/dump.json"
+
+	var table []Product
+	table, err := ReadTableFromJson(jsonPath)
+
+	if err != nil {
 		log.Fatal(err)
 		return
 	}
 
+	db, err := database.OpenDatabase()
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
+	defer database.CloseDatabase(db)
+
 	for _, product := range table {
-		fmt.Println(product.Name)
-		fmt.Println(product.Price)
-		fmt.Println(product.Image)
-		fmt.Println("---")
+		err = database.InsertProduct(db, database.Product(product))
+
+		if err != nil {
+			log.Println("Warning: Unable to insert product into DB")
+			log.Println(err)
+		}
 	}
 }
