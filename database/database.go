@@ -15,7 +15,7 @@ type Product struct {
 
 func OpenDatabase() (*sql.DB, error) {
 	db, err := sql.Open("mysql",
-		"user:password@tcp(127.0.0.1:3306)/hello")
+		"root:grace_hopper@tcp(127.0.0.1:3306)/grace_hopper")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -33,7 +33,7 @@ func InsertProduct(db *sql.DB, product Product) error {
 }
 
 func Search(db *sql.DB, name string) []Product {
-	rows, err := db.Query("SELECT * FROM products WHERE name LIKE '%?%'", name)
+	rows, err := db.Query("SELECT name, price, image FROM products WHERE name LIKE '%?%'", name)
 	if err != nil {
 		log.Fatal(err)
 	}
