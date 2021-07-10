@@ -107,11 +107,13 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {{range $product := .products}}
                         <tr>
-                            <td><img src="https://picsum.photos/200" /></td>
-                            <td>Eine Tüte Luft</td>
-                            <td>100,00€</td>
+                            <td><img src="{{$product.Image}}" /></td>
+                            <td>"{{$product.Name}}"</td>
+                            <td>"{{$product.Price}}"</td>
                         </tr>
+                        {{end}}
                     </tbody>
                 </table>
             </div>
