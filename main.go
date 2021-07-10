@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"time"
 
@@ -12,10 +13,14 @@ import (
 func main() {
 	router := gin.Default()
 	router.LoadHTMLGlob("templates/*")
-	db, _ := database.OpenDatabase()
+	db, err := database.OpenDatabase()
+
+	if err != nil {
+		log.Println("Unable to establish a connection to the DB")
+		log.Fatal(err)
+	}
 
 	defer database.CloseDatabase(db)
-	// handle Error
 
 	router.GET("/", func(c *gin.Context) {
 		datetime := time.Now().Format("01-02-2006 15:04:05")
