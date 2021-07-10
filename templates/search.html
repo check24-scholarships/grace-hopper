@@ -116,8 +116,8 @@
                         {{range $product := .products}}
                         <tr>
                             <td><img src="{{$product.Image}}" /></td>
-                            <td>"{{$product.Name}}"</td>
-                            <td>"{{$product.Price}}"</td>
+                            <td style="color: #FFA900";><h2>{{$product.Name}}</h2></td>
+                            <td>{{$product.Price}} ct</td>
                         </tr>
                         {{end}}
                     </tbody>
